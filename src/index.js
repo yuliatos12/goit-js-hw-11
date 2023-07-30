@@ -1,5 +1,13 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import {fetchImages} from './pixa-bay-api';
+import SimpleLightbox from "simplelightbox";
+// Додатковий імпорт стилів
+import "simplelightbox/dist/simple-lightbox.min.css";
+
+let lightbox = new SimpleLightbox('.photo-link', { 
+    captionsData: 'alt',
+    captionDelay: 200,
+});
 
 const refs = {
     searchForm: document.querySelector('.search-form'),
@@ -27,6 +35,7 @@ if (!searchQuery) {
 fetchImages(searchQuery, page, perPage).then(data => {
    const results = data.hits;
     gallery.innerHTML = createGalleryMarkUp(results);
+    lightbox.refresh();
 
     if (data.totalHits === 0) {
         Notify.failure('Sorry, there are no images matching your search query. Please try again.');
@@ -59,7 +68,10 @@ function createGalleryMarkUp (results) {
     
     const imgArr = results.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
         return `<div class="photo-card">
+        <a class="photo-link" href="${largeImageURL}">
                 <img src="${webformatURL}" alt="${tags}" width="300" loading="lazy" />
+            </a>
+                
         <div class="info">
             <p class="info-item">
             <b>Likes <span>${likes}</span></b>

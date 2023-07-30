@@ -31,6 +31,7 @@ button {
 }
 .load-more {
    margin-top: 30px;
+   margin-bottom: 20px;
    background-color: lightskyblue;
    color: white;
 }
@@ -61,6 +62,7 @@ button:hover {
 }
 .photo-card {  
   flex-basis: (100% - 60px) / 4; 
+  border: 1px solid rgba(221, 221, 225, 0.8);
 }
 .gallery {
     display: flex;
@@ -71,8 +73,11 @@ button:hover {
 .info {
     display: flex;
     gap: 15px;
+    padding: 5px;
 }
 span {
     display: block;
     font-weight: 400;
+    margin-top: 5px;
+    color: lightskyblue;
 }
