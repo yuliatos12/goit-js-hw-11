@@ -38,8 +38,9 @@ fetchImages(searchQuery, page, perPage).then(data => {
     lightbox.refresh();
 
     if (data.totalHits === 0) {
+        loadMoreBtn.classList.replace('load-more','is-hidden');
         Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-         loadMoreBtn.classList.replace('load-more','is-hidden');
+         
     } else {
         Notify.info(`Hooray! We found ${data.totalHits} images.`);
         loadMoreBtn.classList.remove('is-hidden');
@@ -49,21 +50,23 @@ fetchImages(searchQuery, page, perPage).then(data => {
 
 
 }
-
+loadMoreBtn.addEventListener('click', handleLoadMoreBtnClick);
 function handleLoadMoreBtnClick () {
     page += 1;
     fetchImages(searchQuery, page, perPage).then(data => {
         const results = data.hits;
         const numberOfPages = Math.ceil(data.totalHits / perPage);
-        if (numberOfPages === page) {
+        if (numberOfPages < page) { 
+            loadMoreBtn.classList.replace('load-more','is-hidden');
             Notify.info("We're sorry, but you've reached the end of search results.");
-            loadMoreBtn.classList.add('is-hidden');
+            loadMoreBtn.removeEventListener('click', handleLoadMoreBtnClick)
         }
-         gallery.insertAdjacentHTML('beforeend', createGalleryMarkUp(results));
+         gallery.insertAdjacentHTML('beforeend', createGalleryMarkUp(results)); 
+         lightbox.refresh();
         }).catch(handleError);
-
+       
 }
-loadMoreBtn.addEventListener('click', handleLoadMoreBtnClick);
+
 function createGalleryMarkUp (results) { 
     
     const imgArr = results.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {

@@ -10,7 +10,6 @@ export async function fetchImages(q, page, perPage) {
       );
       return response.data;
     } catch (error) {
-      throw error;
+      throw new Error();
     }
   }
-  fetchImages().then(console.log);
