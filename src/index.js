@@ -45,24 +45,31 @@ fetchImages(searchQuery, page, perPage).then(data => {
         Notify.info(`Hooray! We found ${data.totalHits} images.`);
         loadMoreBtn.classList.remove('is-hidden');
     }
+    if(page <= 1) {
+        loadMoreBtn.classList.add('is-hidden'); 
+    }
+    if (data.totalHits > perPage) {
+        loadMoreBtn.classList.remove('is-hidden');
+    };
     
 }).catch(handleError);
-
-
 }
 loadMoreBtn.addEventListener('click', handleLoadMoreBtnClick);
+
 function handleLoadMoreBtnClick () {
     page += 1;
     fetchImages(searchQuery, page, perPage).then(data => {
         const results = data.hits;
         const numberOfPages = Math.ceil(data.totalHits / perPage);
-        if (numberOfPages < page) { 
-            loadMoreBtn.classList.replace('load-more','is-hidden');
+        if (page === numberOfPages) { 
+            loadMoreBtn.classList.add('is-hidden');
             Notify.info("We're sorry, but you've reached the end of search results.");
             loadMoreBtn.removeEventListener('click', handleLoadMoreBtnClick)
         }
          gallery.insertAdjacentHTML('beforeend', createGalleryMarkUp(results)); 
          lightbox.refresh();
+
+        
         }).catch(handleError);
        
 }
