@@ -28,10 +28,12 @@ function handleSubmit(event) {
 event.preventDefault();
 
 searchQuery = event.target.firstElementChild.value.trim();
-// console.log(searchQuery);
+page = 1;
+
 if (!searchQuery) {
     return;
 }
+
 fetchImages(searchQuery, page, perPage).then(data => {
    const results = data.hits;
     gallery.innerHTML = createGalleryMarkUp(results);
@@ -51,6 +53,7 @@ fetchImages(searchQuery, page, perPage).then(data => {
     if (data.totalHits > perPage) {
         loadMoreBtn.classList.remove('is-hidden');
     };
+  
     
 }).catch(handleError);
 }
