@@ -67,7 +67,7 @@ function handleLoadMoreBtnClick () {
         if (page === numberOfPages) { 
             loadMoreBtn.classList.add('is-hidden');
             Notify.info("We're sorry, but you've reached the end of search results.");
-            loadMoreBtn.removeEventListener('click', handleLoadMoreBtnClick)
+            
         }
          gallery.insertAdjacentHTML('beforeend', createGalleryMarkUp(results)); 
          lightbox.refresh();
